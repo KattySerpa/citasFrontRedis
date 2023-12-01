@@ -10,6 +10,13 @@ import { cita_interface } from './interface/cita.interface';
 
 export class AppComponent {
   title = 'redis_citas';
+
+  departamentos:any=[]
+  codigo_departamento:string='';
+  codigo_provincia:string='';
+  provincias:any=[]
+  distritos:any=[]
+
   horario:any;
   tramites = [
     {opcion:'Inscripción del Ruc'}, 
@@ -34,7 +41,18 @@ export class AppComponent {
 
   hora_seleccionada:string = '';
 
-  constructor(private citaService: ServiceService) {}
+  constructor(private citaService: ServiceService) {
+
+    this.citaService.get_departamentos().subscribe(
+      data => {
+        this.departamentos = data;
+        console.log("data ==> ",data);
+      },
+      error => {
+        console.error('Error en proceso cita', error);
+      }
+    );
+  }
 
    ngOnInit(){
     this.consultarHorarios();
@@ -44,7 +62,7 @@ export class AppComponent {
     this.citaService.getEstadoHorarios().subscribe(
       data => {
         this.horario = data;
-        console.log("data ==> ",data); // Puedes hacer lo que quieras con los datos aquí
+        console.log("data ==> ",data);
       },
       error => {
         console.error('Error al obtener el horario', error);
@@ -63,8 +81,7 @@ export class AppComponent {
     this.citaService.proceso_cita(hora).subscribe(
       data => {
         this.mensaje = data;
-        console.log("data ==> ",data); // Puedes hacer lo que quieras con los datos aquí
-        //this.consultarHorarios();
+        console.log("data ==> ",data);
       },
       error => {
         console.error('Error en proceso cita', error);
@@ -78,14 +95,50 @@ export class AppComponent {
     this.citaService.agregar_cita(this.hora_seleccionada, this.cita).subscribe(
       (response) => {
        console.log('Success:', response);
-       // Handle success as needed
       },
       (error) => {
         console.error('Error:', error);
-        // Handle error as needed
       }
     );
     console.log(this.cita);
+  }
+
+  onDepartamentoChange(event: any): void {
+    const departamentoSeleccionado = event.target.value;
+    const departamento_busqueda = this.departamentos.find(
+      (      dep: { valor: any; }) => dep.valor === departamentoSeleccionado
+    );
+
+    this.codigo_departamento= departamento_busqueda.llave.split("_")[1]
+    
+    this.citaService.get_provincias(this.codigo_departamento).subscribe(
+      data => {
+        this.provincias = data;
+      },
+      error => {
+        console.error('Error en proceso cita', error);
+      }
+    );
+  }
+
+  onProvinciaChange(event: any): void {
+    const provinciaSeleccionado = event.target.value;
+    console.log("provinciaSeleccionado===> ",provinciaSeleccionado)
+    console.log("this.provincias===> ",this.provincias)
+    const provincia_busqueda = this.provincias.find(
+      (      prov: { valor: any; }) => prov.valor === provinciaSeleccionado
+    );
+
+    this.codigo_provincia= provincia_busqueda.llave.split("_")[1]
+    
+    this.citaService.get_distritos(this.codigo_provincia).subscribe(
+      data => {
+        this.distritos = data;
+      },
+      error => {
+        console.error('Error en proceso cita', error);
+      }
+    );
   }
 
    

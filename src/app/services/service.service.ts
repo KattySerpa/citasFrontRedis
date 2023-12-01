@@ -18,6 +18,20 @@ export class ServiceService {
 
   }
 
+  public get_departamentos(){
+    const api= "http://localhost:5000/departamentos";
+    return this.http.get(api);
+  }
+  
+  public get_provincias(codigo_departamento:any){
+    const api= "http://localhost:5000/provincias/"+codigo_departamento;
+    return this.http.get(api);
+  }
+
+  public get_distritos(codigo_provincia:any){
+    const api= "http://localhost:5000/distritos/"+codigo_provincia;
+    return this.http.get(api);
+  }
 
 
   public getEstadoHorarios(){

@@ -23,29 +23,23 @@
     
                     <label for="exampleFormControlInput1" class="form-label">Departamento</label>
                     <div class="col-md">
-                        <select [(ngModel)] = "cita.departamento" class="form-select" id="floatingSelectGrid">
-                        <option selected>Departamento</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <select [(ngModel)] = "cita.departamento" class="form-select" id="floatingSelectGrid" (change)="onDepartamentoChange($event)">
+                            <option selected>Departamento</option>
+                            <option *ngFor="let departamento of departamentos">{{departamento.valor}}</option>
                         </select>
                     </div>
                     <label for="exampleFormControlInput1" class="form-label">Provincia</label>
                     <div class="col-md">
-                        <select [(ngModel)] = "cita.provincia" class="form-select" id="floatingSelectGrid">
-                        <option selected>Provincia</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <select [(ngModel)] = "cita.provincia" class="form-select" id="floatingSelectGrid"  (change)="onProvinciaChange($event)">
+                            <option selected>Provincia</option>
+                            <option *ngFor="let provincia of provincias">{{provincia.valor}}</option>
                         </select>
                     </div>
                     <label for="exampleFormControlInput1" class="form-label">Distrito</label>
                     <div class="col-md">
                         <select [(ngModel)] = "cita.distrito" class="form-select" id="floatingSelectGrid">
-                        <option selected>Distrito</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                            <option selected>Distrito</option>
+                            <option *ngFor="let distrito of distritos">{{distrito.valor}}</option>
                         </select>
                     </div>
                 </div>
