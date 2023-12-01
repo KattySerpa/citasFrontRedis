@@ -53,7 +53,8 @@
                 <div class="container">
                     <h3>Elija su trámite</h3>
                     <div class="form-check" *ngFor="let tramite of tramites; let i = index">
-                      <input class="form-check-input" type="radio" name="flexRadioDefault" [id]="'flexRadioDefault' + i" [(ngModel)]="cita.tramite" [value]="tramite.opcion" (change)="onRadioChange($event)">
+                      <input class="form-check-input" type="radio" name="flexRadioDefault" [id]="'flexRadioDefault' + i" 
+                             [(ngModel)]="cita.tramite" [value]="tramite.opcion" (change)="onRadioChange($event)">
                       <label class="form-check-label" [for]="'flexRadioDefault' + i">
                         {{ tramite.opcion }}
                       </label>

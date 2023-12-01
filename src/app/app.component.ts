@@ -70,11 +70,21 @@ export class AppComponent {
         console.error('Error en proceso cita', error);
       }
     );
+    this.consultarHorarios();
   }
 
   registrar_cita(){
     console.log("Ingresando a registrar_cita(): ",this.hora_seleccionada);
-    this.citaService.agregar_cita(this.hora_seleccionada,this.cita);
+    this.citaService.agregar_cita(this.hora_seleccionada, this.cita).subscribe(
+      (response) => {
+       console.log('Success:', response);
+       // Handle success as needed
+      },
+      (error) => {
+        console.error('Error:', error);
+        // Handle error as needed
+      }
+    );
     console.log(this.cita);
   }
 
