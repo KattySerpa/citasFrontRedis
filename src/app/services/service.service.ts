@@ -38,15 +38,17 @@ export class ServiceService {
     return this.http.get('http://localhost:5000/listar_horario');
   }
 
+  public getCitas(){
+    return this.http.get('http://localhost:5000/listar_citas');
+  }
+
   public proceso_cita(hora:string){
     const api= "http://localhost:5000/proceso_cita/"+hora;
     return this.http.get(api);
   }
 
   public agregar_cita(hora:string, cita:cita_interface){//debugger;
-    console.log("Ingresando a servicio agregar_cita: ", hora, cita);
     const url = `http://localhost:5000/agregar_cita/${hora}`;
-    console.log("url agregar_cita: ", url);
     return this.http.post(url, cita);  
   }
 }
