@@ -48,7 +48,6 @@ export class AppComponent {
     this.citaService.get_departamentos().subscribe(
       data => {
         this.departamentos = data;
-        console.log("data ==> ",data);
       },
       error => {
         console.error('Error en proceso cita', error);
@@ -67,7 +66,6 @@ export class AppComponent {
     this.citaService.getEstadoHorarios().subscribe(
       data => {
         this.horario = data;
-        console.log("data ==> ",data);
       },
       error => {
         console.error('Error al obtener el horario', error);
@@ -79,7 +77,6 @@ export class AppComponent {
     this.citaService.getCitas().subscribe(
       data => {
         this.lista_citas = data;
-        console.log("data ==> ",data);
       },
       error => {
         console.error('Error al obtener el horario', error);
@@ -88,7 +85,6 @@ export class AppComponent {
    }
 
    onRadioChange(event: any) {
-    console.log("Opción seleccionada:", this.opcionSeleccionada);
     this.consultarHorarios();
   }
 
@@ -99,7 +95,6 @@ export class AppComponent {
   iniciar_cuenta_regresiva(): void {
     this.cuenta_regresivaTimeout = setTimeout(() => {
       this.cuenta_regresiva--;
-      console.log("this.cuenta_regresiva=> ",this.cuenta_regresiva)
       if (this.cuenta_regresiva > 0 && this.estado_registrado==false) {
         // Si el cuenta_regresiva no ha llegado a cero, inicia el próximo setTimeout
         this.iniciar_cuenta_regresiva();
@@ -113,12 +108,10 @@ export class AppComponent {
 
   proceso_cita(hora:any){
     this.estado_registrado=false;
-    console.log("hora ==>",hora);
     this.hora_seleccionada=hora;
     this.citaService.proceso_cita(hora).subscribe(
       data => {
         this.mensaje = data;
-        console.log("data ==> ",data);
 
         this.consultarHorarios();
         this.cuenta_regresiva=11;
@@ -134,25 +127,36 @@ export class AppComponent {
 
   registrar_cita(){
     this.estado_registrado=true;
-    console.log("Ingresando a registrar_cita(): ",this.hora_seleccionada);
-    console.log("this.cita =>",this.cita);
     this.citaService.agregar_cita(this.hora_seleccionada, this.cita).subscribe(
       (response) => {
-       console.log('Success:', response);
        this.cuenta_regresiva=0;
        this.consultarCitas();
        this.consultarHorarios();
        clearTimeout(this.cuenta_regresivaTimeout);
-       this.mensajitus='Cita agregada con étsito';
+       this.mensajitus='Cita agregada con éxito';
+       this.limpiar_campos();
       },
       (error) => {
         console.error('Error:', error);
       }
     );
-    console.log(this.cita);
   }
 
-
+  cancelar_cita(){
+    this.limpiar_campos();
+  }
+  
+  limpiar_campos(){
+    this.cita={
+      nombre: '',
+      apellido_paterno:'',
+      apellido_materno:'',
+      departamento:'',
+      provincia:'',
+      distrito:'',
+      tramite:''
+    };
+  }
   onDepartamentoChange(event: any): void {
     const departamentoSeleccionado = event.target.value;
     const departamento_busqueda = this.departamentos.find(
@@ -173,8 +177,6 @@ export class AppComponent {
 
   onProvinciaChange(event: any): void {
     const provinciaSeleccionado = event.target.value;
-    console.log("provinciaSeleccionado===> ",provinciaSeleccionado)
-    console.log("this.provincias===> ",this.provincias)
     const provincia_busqueda = this.provincias.find(
       (      prov: { valor: any; }) => prov.valor === provinciaSeleccionado
     );
